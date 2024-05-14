@@ -1,0 +1,1 @@
+# SearchSimulatorFile-for-mac

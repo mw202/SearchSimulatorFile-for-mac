@@ -7,21 +7,19 @@
 
 import Cocoa
 
-class DirectoryTreeModel: NSObject {
+class DirectoryTreeInfo {
     var name: String = ""
     var icon: NSImage?
     var fullPath: String = ""
     var createDate: Date?
     var size: Int?
-    var parent: DirectoryTreeModel?
-    var children: [DirectoryTreeModel]?
+    var parent: DirectoryTreeInfo?
+    var children: [DirectoryTreeInfo]?
     var isDirectory: Bool = false
     var isHidden: Bool = false
     var isPackage: Bool = false
     
-    override init() {
-        super.init()
-    }
+    init() {}
     
     init(_ resource: URLResourceValues?) {
         let name = resource?.name ?? "Unknown"
@@ -51,7 +49,7 @@ class ApplicationInfo {
     var fullPath: String = ""
     var UUID: String = ""
     var size: Int = 0
-    var files: [DirectoryTreeModel] = []
+    var files: [DirectoryTreeInfo] = []
     
     static let metaDataFile = ".com.apple.mobile_container_manager.metadata.plist"
     static let kMetaIdentifier = "MCMMetadataIdentifier"

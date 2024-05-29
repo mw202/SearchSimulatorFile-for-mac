@@ -18,7 +18,7 @@
 		6ADC1D592BE5D4890014A2C4 /* SearchSimulatorFileTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ADC1D582BE5D4890014A2C4 /* SearchSimulatorFileTests.swift */; };
 		6ADC1D642BE5D4890014A2C4 /* SearchSimulatorFileUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ADC1D632BE5D4890014A2C4 /* SearchSimulatorFileUITests.swift */; };
 		6ADC1D822BE5D8BD0014A2C4 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ADC1D812BE5D8BD0014A2C4 /* MainViewController.swift */; };
-		6ADC1D8E2BE5D9B40014A2C4 /* DirectoryTreeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ADC1D8D2BE5D9B40014A2C4 /* DirectoryTreeModel.swift */; };
+		6ADC1D8E2BE5D9B40014A2C4 /* DirectoryTreeInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ADC1D8D2BE5D9B40014A2C4 /* DirectoryTreeInfo.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,7 +57,7 @@
 		6ADC1D632BE5D4890014A2C4 /* SearchSimulatorFileUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSimulatorFileUITests.swift; sourceTree = "<group>"; };
 		6ADC1D652BE5D4890014A2C4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6ADC1D812BE5D8BD0014A2C4 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
-		6ADC1D8D2BE5D9B40014A2C4 /* DirectoryTreeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectoryTreeModel.swift; sourceTree = "<group>"; };
+		6ADC1D8D2BE5D9B40014A2C4 /* DirectoryTreeInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectoryTreeInfo.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -169,7 +169,7 @@
 		6ADC1D892BE5D9910014A2C4 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				6ADC1D8D2BE5D9B40014A2C4 /* DirectoryTreeModel.swift */,
+				6ADC1D8D2BE5D9B40014A2C4 /* DirectoryTreeInfo.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -310,7 +310,7 @@
 				6ADC1D822BE5D8BD0014A2C4 /* MainViewController.swift in Sources */,
 				6A346E6E2BEC76CB00822ED8 /* DirectoryTreeService.swift in Sources */,
 				6ADC1D462BE5D4870014A2C4 /* AppDelegate.swift in Sources */,
-				6ADC1D8E2BE5D9B40014A2C4 /* DirectoryTreeModel.swift in Sources */,
+				6ADC1D8E2BE5D9B40014A2C4 /* DirectoryTreeInfo.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

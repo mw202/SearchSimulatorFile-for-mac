@@ -811,7 +811,6 @@
                                                 </tableColumn>
                                             </tableColumns>
                                             <connections>
-                                                <action trigger="doubleAction" selector="folderDoubleClick:" target="XfG-lQ-9wD" id="2C0-zU-sye"/>
                                                 <outlet property="dataSource" destination="XfG-lQ-9wD" id="2eX-L5-pmt"/>
                                                 <outlet property="delegate" destination="XfG-lQ-9wD" id="Dhj-wu-8gZ"/>
                                             </connections>
@@ -1012,17 +1011,6 @@
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <button hidden="YES" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bYi-XJ-AdQ">
-                                <rect key="frame" x="466" y="34" width="50" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <buttonCell key="cell" type="square" title="查找" bezelStyle="shadowlessSquare" image="NSTouchBarSearchTemplate" imagePosition="left" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="7bG-8E-sSw">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="clickSearchId:" target="XfG-lQ-9wD" id="js1-wm-Hce"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <constraints>
                             <constraint firstItem="dhk-mg-WpW" firstAttribute="trailing" secondItem="mj3-Q8-Yb7" secondAttribute="trailing" id="3we-y3-kua"/>
@@ -1090,6 +1078,5 @@
         <image name="NSActionTemplate" width="14" height="14"/>
         <image name="NSRefreshTemplate" width="11" height="15"/>
         <image name="NSRevealFreestandingTemplate" width="14" height="14"/>
-        <image name="NSTouchBarSearchTemplate" width="19" height="30"/>
     </resources>
 </document>

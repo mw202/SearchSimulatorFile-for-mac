@@ -14,7 +14,7 @@ class DirectoryTreeFileNameTableCellView: NSTableCellView {
     
     override var objectValue: Any? {
         didSet {
-            if let value = objectValue as? DirectoryTreeModel {
+            if let value = objectValue as? DirectoryTreeInfo {
                 labelName.stringValue = value.name
                 imageViewIcon.image = value.icon
             }

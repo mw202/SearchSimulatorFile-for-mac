@@ -21,11 +21,7 @@ class MainViewController: NSViewController {
     @IBOutlet weak var labelFileCount: NSTextField!
     
     private let kFilterId = "\(Bundle.main.bundleIdentifier ?? "com").filter.identifier"
-    private var files: [DirectoryTreeModel]? {
-        willSet {
-            labelFileCount.stringValue = "\(newValue?.count ?? 0) 个文件"
-        }
-    }
+    private var files: [DirectoryTreeInfo]?
     private var sortDescriptor: NSSortDescriptor?
     private var devicesDirectory = ""
     private var deviceSetFile: String {
@@ -78,10 +74,10 @@ class MainViewController: NSViewController {
                                 let keys: [URLResourceKey] = [.creationDateKey, .isHiddenKey, .isDirectoryKey, .parentDirectoryURLKey, .fileSizeKey, .nameKey, .isPackageKey, .effectiveIconKey, .pathKey]
                                 
                                 do {
-                                    let contents = try fileManager.contentsOfDirectory(at: URL(fileURLWithPath: appFolder), includingPropertiesForKeys: nil)
+                                    let contents = try fileManager.contentsOfDirectory(at: URL(fileURLWithPath: appFolder), includingPropertiesForKeys: keys)
                                     for content in contents {
                                         let resource = try? content.resourceValues(forKeys: Set(keys))
-                                        let item = DirectoryTreeModel(resource)
+                                        let item = DirectoryTreeInfo(resource)
                                         if item.isDirectory && !item.isPackage {
                                             let metaFile = "\(item.fullPath)/\(ApplicationInfo.metaDataFile)"
                                             if let dicMeta = decoderPlistFile(URL(fileURLWithPath: metaFile)) {
@@ -139,17 +135,17 @@ class MainViewController: NSViewController {
         tableViewFile.tableColumns.safeObject(index: 2)?.sortDescriptorPrototype = sortSize
     }
     
-    func SearchSimulatorFile(_ url: URL) -> [DirectoryTreeModel] {
-        var items: [DirectoryTreeModel] = []
+    func SearchSimulatorFile(_ url: URL) -> [DirectoryTreeInfo] {
+        var items: [DirectoryTreeInfo] = []
 
         let fileManager = FileManager.default
         let keys: [URLResourceKey] = [.creationDateKey, .isHiddenKey, .isDirectoryKey, .parentDirectoryURLKey, .fileSizeKey, .nameKey, .isPackageKey, .effectiveIconKey, .pathKey]
 
         do {
-            let contents = try fileManager.contentsOfDirectory(at: url, includingPropertiesForKeys: nil)
+            let contents = try fileManager.contentsOfDirectory(at: url, includingPropertiesForKeys: keys)
             for content in contents {
                 let resource = try? content.resourceValues(forKeys: Set(keys))
-                let item = DirectoryTreeModel(resource)
+                let item = DirectoryTreeInfo(resource)
                 items.append(item)
             }
         } catch {
@@ -159,7 +155,7 @@ class MainViewController: NSViewController {
         return sortedFile(items) ?? []
     }
     
-    func sortedFile(_ items: [DirectoryTreeModel]?) -> [DirectoryTreeModel]? { 
+    func sortedFile(_ items: [DirectoryTreeInfo]?) -> [DirectoryTreeInfo]? { 
         // sortedArray(using sortDescriptors: [NSSortDescriptor]) 闪退
         return items?.sorted { (c1, c2) -> Bool in
             var b = true
@@ -217,7 +213,7 @@ class MainViewController: NSViewController {
             path = item.fullPath
             item.files.removeAll()
         }
-        if let item = object as? DirectoryTreeModel {
+        if let item = object as? DirectoryTreeInfo {
             path = item.fullPath
             item.children?.removeAll()
         }
@@ -227,21 +223,18 @@ class MainViewController: NSViewController {
             if let f = files, let item = object as? ApplicationInfo {
                 item.files.append(contentsOf: f)
             }
-            if let f = files, let item = object as? DirectoryTreeModel {
+            if let f = files, let item = object as? DirectoryTreeInfo {
                 item.children?.append(contentsOf: f)
             }
         }
-        //outlineViewDirectory.reloadItem(object)
         // 只在选中时刷新文件表格，仅仅只是展开三角不需要刷新
         if reloadFile {
+            labelFileCount.stringValue = "\(files?.count ?? 0) 个文件"
             tableViewFile.reloadData()
         }
     }
     
     // MARK: - Click
-    
-    @IBAction func folderDoubleClick(_ sender: NSOutlineView) {
-    }
     
     @IBAction func fileDoubleClick(_ sender: NSTableView) {
         let index = tableViewFile.selectedRow
@@ -250,6 +243,8 @@ class MainViewController: NSViewController {
     
     @IBAction func clickRefresh(_ sender: Any) {
         runtimes?.removeAll()
+        files?.removeAll()
+        labelFileCount.stringValue = "0 个文件"
         
         loadDeviceSet()
         
@@ -314,7 +309,7 @@ extension MainViewController: NSOutlineViewDataSource, NSOutlineViewDelegate {
         if let info = item as? ApplicationInfo {
             return info.files.count
         }
-        if let info = item as? DirectoryTreeModel {
+        if let info = item as? DirectoryTreeInfo {
             return info.children?.count ?? 0
         }
         return 0
@@ -331,10 +326,10 @@ extension MainViewController: NSOutlineViewDataSource, NSOutlineViewDelegate {
             return info.application.safeObject(index: index) ?? ApplicationInfo()
         }
         if let info = item as? ApplicationInfo {
-            return info.files.safeObject(index: index) ?? DirectoryTreeModel()
+            return info.files.safeObject(index: index) ?? DirectoryTreeInfo()
         }
-        if let info = item as? DirectoryTreeModel {
-            return info.children?.safeObject(index: index) ?? DirectoryTreeModel()
+        if let info = item as? DirectoryTreeInfo {
+            return info.children?.safeObject(index: index) ?? DirectoryTreeInfo()
         }
         return RuntimeInfo()
     }
@@ -351,7 +346,7 @@ extension MainViewController: NSOutlineViewDataSource, NSOutlineViewDelegate {
             if let info = item as? ApplicationInfo {
                 value = info.identifier
             }
-            if let info = item as? DirectoryTreeModel {
+            if let info = item as? DirectoryTreeInfo {
                 value = info.name
             }
         }
@@ -384,25 +379,13 @@ extension MainViewController: NSOutlineViewDataSource, NSOutlineViewDelegate {
         if let info = item as? ApplicationInfo {
             return true
         }
-        if let info = item as? DirectoryTreeModel {
+        if let info = item as? DirectoryTreeInfo {
             return info.isDirectory
         }
         return false
     }
     
     func outlineViewItemWillExpand(_ notification: Notification) {
-        /*
-        let view = notification.object as? NSOutlineView
-        if let row = view?.selectedRow { // clickedRow
-            let item = view?.item(atRow: row) as? DirectoryTreeModel
-            if let path = item?.fullPath {
-                SearchSimulatorFile(URL(fileURLWithPath: path), parent: item)
-                files = sortedFile(item?.children)
-                tableViewFile.reloadData()
-            }
-        }
-        */
-        
         let info = notification.userInfo
         
         searchChildren(info?["NSObject"], reloadFile: false)
@@ -414,13 +397,6 @@ extension MainViewController: NSOutlineViewDataSource, NSOutlineViewDelegate {
     
     func outlineViewSelectionDidChange(_ notification: Notification) {
         let view = notification.object as? NSOutlineView
-        /*
-        let columns = view?.selectedColumnIndexes // ?
-        let column = view?.selectedColumn ?? 0
-        let rows = view?.selectedRowIndexes // ?
-        let row = view?.selectedRow ?? -1
-        let model = view?.item(atRow: row)
-        */
         
         if let row = view?.selectedRow,
            let item = view?.item(atRow: row) {
@@ -485,7 +461,6 @@ extension MainViewController: NSTextFieldDelegate {
         switch commandSelector {
         case #selector(NSResponder.insertNewline(_:)):
             if let _ = control as? NSTextField {
-//                clickSearchId(AnyObject.self)
                 clickFilterId(AnyObject.self)
             }
         default: return false

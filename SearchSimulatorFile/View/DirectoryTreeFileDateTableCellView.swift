@@ -13,7 +13,7 @@ class DirectoryTreeFileDateTableCellView: NSTableCellView {
     
     override var objectValue: Any? {
         didSet {
-            if let value = objectValue as? DirectoryTreeModel {
+            if let value = objectValue as? DirectoryTreeInfo {
                 var dateStr = "Unknown"
                 if let d = value.createDate {
                     let fd = DateFormatter()
